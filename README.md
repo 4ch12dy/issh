@@ -3,13 +3,15 @@
 
 
 
-### install
+### Install
+
+> Before install, make sure you have installed iproxy,cfgutil cmds
 
 - `git clone issh_git_project;`
 - `cd issh`
 - `./install.sh`
 
-### command
+### Command
 
 - `issh shell`
 
@@ -31,14 +33,8 @@
 
   注销和重启设备
 
-  
+### Credits
 
-  
+- https://github.com/AloneMonkey/frida-ios-dump
+- https://github.com/libimobiledevice/usbmuxd
 
-  
-
-  
-
-  
-
-  
