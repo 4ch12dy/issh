@@ -98,7 +98,6 @@ function printUsage(){
 	printf "issh %-30s %-20s \n" "help/-h" "show this help info"
 }
 
-
 function issh(){
 	# $setCmd
 	# usage/help
@@ -248,8 +247,17 @@ EOF'
 		cfgutil install-app "$2"
 	fi
 
-	if [[ "$1" = "app" ]]; then
-		sshRunCMD "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app$\""
+	if [[ "$1" =~ "app" ]]; then
+		function handleXargs(){
+			infoPlist=$1
+			scp -P 2222 -r "root@localhost:$infoPlist" /tmp/isshAppTest
+		}
+
+		mkdir -p /tmp/isshAppTest
+		# sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -print0 | \
+		# xargs -0 -i echo \"root@localhost:{}\" /tmp/isshAppTest " | xargs -n 2
+		sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\"" | \
+		xargs -I% sh -c "echo "\n%"; scp -P 2222 -r root@localhost:\"'%'\" /tmp/isshAppTest > /dev/null 2>&1; defaults read /tmp/isshAppTest/Info.plist CFBundleIdentifier;";
 	fi
 
 	if [[ "$1" = "dump" ]]; then
