@@ -84,11 +84,10 @@ function checkIproxy(){
 
 function printUsage(){
 	ilog "First Run issh on new idevice, you will only input ssh password twice!"
-	printf "issh %-30s %-20s \n" "show [dylib/Preferences]" "show some info" 
+	printf "issh %-30s %-20s \n" "show [dylib/Preferences/apps]" "show some info" 
 	printf "issh %-30s %-20s \n" "scp remote_file local_file" "cp file from connect device to local"
-	printf "issh %-30s %-20s \n" "iOSRE" "create xia0 workspace dir:/iOSRE on connect device"
 	printf "issh %-30s %-20s \n" "dump" "Use Frida(frida-ios-dump) to dump IPA"
-	printf "issh %-30s %-20s \n" "tweak" "new a tweak in iOSRE tweak dir"
+	printf "issh %-30s %-20s \n" "debug [wechat,backboard]" "auto sign debugserver[Test on iOS10/11/12] and happy to debug"
 	printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
 	printf "issh %-30s %-20s \n" "device" "show some info about device"
 	printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
@@ -165,7 +164,13 @@ function issh(){
 	if [[ "$1" = "debug" ]]; then
 
 		#  create iOSRE dir if need
-		issh iOSRE
+		ret=`iDirExsit /iOSRE`
+		if [[ "$ret" = "1" ]]; then
+			ilog "iOSRE dir exist"
+		else
+			ilog "iOSRE dir not exist"
+			sshRunCMD "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
+		fi
 		
 		# check iproxy 1234 port is open?
 		ret=`lsof -i tcp:1234 | grep "iproxy"`
@@ -177,6 +182,12 @@ function issh(){
 			(`iproxy 1234 1234` &) > /dev/null 2>&1
 			sleep 1
 		fi
+
+		# check debugserver is alive
+
+		killDebugserverIfAlive="ps -e | grep debugserver | grep -v grep; [[ $? == 0 ]] && (killall -9 debugserver 2> /dev/null)"
+
+		sshRunCMD "$killDebugserverIfAlive"
 		
 		# check tools debugserver
 		ret=`iFileExsit /iOSRE/tools/debugserver`
@@ -235,6 +246,10 @@ EOF'
 
 	if [[ "$1" = "install" ]]; then
 		cfgutil install-app "$2"
+	fi
+
+	if [[ "$1" = "app" ]]; then
+		sshRunCMD "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app$\""
 	fi
 
 	if [[ "$1" = "dump" ]]; then
