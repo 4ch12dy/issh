@@ -162,7 +162,7 @@ function issh(){
 	fi
 
 	if [[ "$1" = "debug" ]]; then
-
+		debugArgs=${@:2:$#}
 		#  create iOSRE dir if need
 		ret=`iDirExsit /iOSRE`
 		if [[ "$ret" = "1" ]]; then
@@ -193,7 +193,7 @@ function issh(){
 		ret=`iFileExsit /iOSRE/tools/debugserver`
 		if [[ "$ret" = "1" ]]; then
 			ilog "/iOSRE/tools/debugserver file exist, Start debug..."
-			sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 -a $2"
+			sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 $debugArgs"
 		else
 			ilog "/iOSRE/tools/debugserver file not exist"
 
@@ -239,7 +239,7 @@ EOF'
 			cp /iOSRE/tmp/debugserver /iOSRE/tools/;\
 			"
 			sshRunCMD "$debugCMD"
-			sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 -a $2"
+			sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 $debugArgs"
 		fi
 
 	fi
