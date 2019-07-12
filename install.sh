@@ -27,8 +27,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 	    xlog "not install. gogogo..."
 	    echo -e "\nsource $shell_file" >> $zsh_profile
 	fi
-
-	zsh -c "source $zsh_profile > /dev/null"
+	# source $zsh_profile > /dev/null
 	xlog "done!"
 	exit
 fi
@@ -44,5 +43,5 @@ else
     echo -e "\nsource $shell_file" >> $bash_profile
 fi
 
-source $bash_profile > /dev/null
+# source $bash_profile > /dev/null
 xlog "done!"

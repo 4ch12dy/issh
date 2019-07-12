@@ -10,6 +10,8 @@
 - `git clone issh_git_project;`
 - `cd issh`
 - `./install.sh`
+- If your shell is bash run: `source ~/.bash_profile` 
+- If your shell is zsh run :`source ~/.zshrc`
 
 ### Command
 
