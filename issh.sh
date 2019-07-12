@@ -90,6 +90,7 @@ function printUsage(){
 	printf "issh %-30s %-20s \n" "debug [wechat,backboard]" "auto sign debugserver[Test on iOS10/11/12] and happy to debug"
 	printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
 	printf "issh %-30s %-20s \n" "device" "show some info about device"
+	printf "issh %-30s %-20s \n" "apps" "show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath)"
 	printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
 	printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
 	printf "issh %-30s %-20s \n" "run" "execute shell command on connect device"
@@ -259,11 +260,11 @@ EOF'
 		# xargs -0 -i echo \"root@localhost:{}\" /tmp/isshAppTest " | xargs -n 2
 		# sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\"" | \
 		# xargs -I% sh -c "echo "\n%"; scp -P 2222 -r root@localhost:\"'%'\" /tmp/isshAppTest > /dev/null 2>&1; defaults read /tmp/isshAppTest/Info.plist CFBundleIdentifier;";
-		sshRunCMD "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}\" CFBundleIdentifier; \
-		defaults read \"{}\" CFBundleExecutable; defaults read \"{}\" CFBundleDisplayName; \" \;"
+		sshRunCMD "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}/Info.plist\" CFBundleIdentifier; \
+		defaults read \"{}/Info.plist\" CFBundleExecutable; defaults read \"{}/Info.plist\" CFBundleDisplayName; \" \;"
 
-		sshRunCMD "find /Applications/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}\" CFBundleIdentifier; \
-		defaults read \"{}\" CFBundleExecutable; defaults read \"{}\" CFBundleDisplayName; \" \;"
+		sshRunCMD "find /Applications/ -regex \"[^\.]*/[^\.]*\.app$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}/Info.plist\" CFBundleIdentifier; \
+		defaults read \"{}/Info.plist\" CFBundleExecutable; defaults read \"{}/Info.plist\" CFBundleDisplayName; \" \;"
 	fi
 
 	if [[ "$1" = "dump" ]]; then

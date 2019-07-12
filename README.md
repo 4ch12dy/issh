@@ -33,6 +33,12 @@
 
   注销和重启设备
 
+- `issh apps`
+
+  显示所有app（包括系统app），包名，显示名，进程名，完整路径等
+
+  
+
 ### Credits
 
 - https://github.com/AloneMonkey/frida-ios-dump
