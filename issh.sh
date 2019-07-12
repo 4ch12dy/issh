@@ -51,17 +51,6 @@ function isshNoPWD(){
 
 	else
 
-		# ilog "scp id_rsa.pub to connect iDevice [1/2]"
-		# scp -P 2222 -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub root@localhost:/tmp > /dev/null 2>&1
-
-		# ilog "add id_rsa.pub to authorized_keys [2/2]"
-		
-		# sshScript="[ -d /var/root/\.ssh ] \
-		# || (mkdir -p /var/root/\.ssh);	\
-		# [ -f /var/root/\.ssh/authorized_keys ] \
-		# && (cat /tmp/id_rsa.pub >> /var/root/\.ssh/authorized_keys;touch /var/root/\.ssh/xia0_ssh.lock) \
-		# || (mv /tmp/id_rsa.pub /var/root/\.ssh/authorized_keys;touch  /var/root/\.ssh/xia0_ssh.lock)"
-		
 		ilog "add id_rsa.pub to authorized_keys"
 		ssh-copy-id -p 2222 root@localhost
 
@@ -80,10 +69,7 @@ function checkIproxy(){
 		ilog "iproxy process for 2222 port alive, pid=$iproxyPid"
 	else
 		ilog "iproxy process for 2222 port dead, start iproxy 2222 22"
-		# ilog "start iproxy"
-		# (`iproxy 2222 22` &) > /dev/null 2>&1
 		(iproxy 2222 22 &) > /dev/null 2>&1
-		# ilog "end iproxy"
 		sleep 1
 	fi
 }

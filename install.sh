@@ -33,6 +33,7 @@ else
     echo -e "\nsource $shell_file" >> $sh_profile
 fi
 xlog "done!"
+xlog "Please Run command:source $sh_profile"
 
 
 
