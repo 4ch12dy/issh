@@ -64,11 +64,13 @@ function isshNoPWD(){
 
 		# cat /dev/null > ~/.ssh/known_hosts
 		ssh root@localhost -p 2222 -o stricthostkeychecking=no $sshScript 2> /dev/null
-
+		
 		ilog "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
 	fi
 
 }
+
+
 
 function checkIproxy(){
 	ret=`lsof -i tcp:2222 | grep "iproxy"`
@@ -77,7 +79,7 @@ function checkIproxy(){
 		ilog "iproxy process for 2222 port alive, pid=$iproxyPid"
 	else
 		ilog "iproxy process for 2222 port dead, start iproxy 2222 22"
-		(`iproxy 2222 22` &) > /dev/null 2>&1
+		(iproxy 2222 22 &) > /dev/null 2>&1
 		sleep 1
 	fi
 }
@@ -179,7 +181,7 @@ function issh(){
 			ilog "iproxy process for 1234 port alive, pid=$iproxyPid"
 		else
 			ilog "iproxy process for 1234 port dead, start iproxy 1234 1234"
-			(`iproxy 1234 1234` &) > /dev/null 2>&1
+			(iproxy 1234 1234 &) > /dev/null 2>&1
 			sleep 1
 		fi
 
