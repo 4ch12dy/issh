@@ -25,7 +25,7 @@
 
 - `issh dump [dumpArgs:-l]`
 
-  用的庆哥的frida-ios-dump脚本，会自动下载并运行
+  用的frida-ios-dump脚本，会自动下载并运行
 
 - `issh run "cmd"`
 

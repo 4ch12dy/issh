@@ -18,7 +18,7 @@ echo "$shell_root_dir" > ~/.issh/rootdir
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
 	# add issh.sh to bash_profile
-	xlog "source "$zsh_profile
+	xlog "add \"source $zsh_profile\" to ~/.zshrc"
 
 	grep 'issh.sh' $zsh_profile > /dev/null
 	if [ $? -eq 0 ]; then
@@ -28,13 +28,13 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 	    echo -e "\nsource $shell_file" >> $zsh_profile
 	fi
 	# source $zsh_profile > /dev/null
-	xlog "done!"
+	xlog "Please Run command:source $zsh_profile"
 	exit
 fi
 
 
 # add issh.sh to bash_profile
-xlog "source "$bash_profile
+xlog "add \"source $bash_profile\" to ~/.bash_profile"
 grep 'issh.sh' $bash_profile > /dev/null
 if [ $? -eq 0 ]; then
     xlog $bash_profile" has include "$shell_file_name" just source it."
@@ -44,4 +44,4 @@ else
 fi
 
 # source $bash_profile > /dev/null
-xlog "done!"
+xlog "Please Run command:source $bash_profile"
