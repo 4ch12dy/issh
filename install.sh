@@ -7,6 +7,7 @@ bash_profile=$HOME"/.bash_profile"
 zsh_profile=$HOME"/.zshrc"
 
 
+
 function xlog(){
     echo "[log]: "$1
 }
@@ -17,31 +18,21 @@ fi
 echo "$shell_root_dir" > ~/.issh/rootdir
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-	# add issh.sh to bash_profile
-	xlog "add \"source $zsh_profile\" to ~/.zshrc"
-
-	grep 'issh.sh' $zsh_profile > /dev/null
-	if [ $? -eq 0 ]; then
-	    xlog $zsh_profile" has include "$shell_file_name" just source it."
-	else
-	    xlog "not install. gogogo..."
-	    echo -e "\nsource $shell_file" >> $zsh_profile
-	fi
-	# source $zsh_profile > /dev/null
-	xlog "Please Run command:source $zsh_profile"
-	exit
-fi
-
-
-# add issh.sh to bash_profile
-xlog "add \"source $bash_profile\" to ~/.bash_profile"
-grep 'issh.sh' $bash_profile > /dev/null
-if [ $? -eq 0 ]; then
-    xlog $bash_profile" has include "$shell_file_name" just source it."
+	sh_profile=$zsh_profile
 else
-    xlog "not install. gogogo..."
-    echo -e "\nsource $shell_file" >> $bash_profile
+	sh_profile=$bash_profile
 fi
 
-# source $bash_profile > /dev/null
-xlog "Please Run command:source $bash_profile"
+xlog "source "$sh_profile
+
+grep 'issh.sh' $sh_profile > /dev/null
+if [ $? -eq 0 ]; then
+    xlog $sh_profile" has include "$shell_file_name" just source it."
+else
+    xlog "installing..."
+    echo -e "\nsource $shell_file" >> $sh_profile
+fi
+xlog "done!"
+
+
+
