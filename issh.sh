@@ -79,7 +79,7 @@ function printUsage(){
 	printf "issh %-30s %-20s \n" "show [dylib/Preferences/apps]" "show some info" 
 	printf "issh %-30s %-20s \n" "scp remote_file local_file" "cp file from connect device to local"
 	printf "issh %-30s %-20s \n" "dump" "Use Frida(frida-ios-dump) to dump IPA"
-	printf "issh %-30s %-20s \n" "debug [wechat,backboard]" "auto sign debugserver[Test on iOS10/11/12] and happy to debug"
+	printf "issh %-30s %-20s \n" "debug [-a wechat -x backboard]" "auto sign debugserver[Test on iOS9/10/11/12] and happy to debug"
 	printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
 	printf "issh %-30s %-20s \n" "device" "show some info about device"
 	printf "issh %-30s %-20s \n" "apps" "show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath)"
