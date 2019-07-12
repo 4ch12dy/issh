@@ -33,7 +33,8 @@ function iDirExsit(){
 }
 
 function removeRSA(){
-	cat ~/.ssh/known_hosts | grep -v "2222" && ( > ~/.ssh/known_hosts)|| (cat /dev/null > ~/.ssh/known_hosts)
+	# cat ~/.ssh/known_hosts | grep -v "2222" && ( > ~/.ssh/known_hosts)|| (cat /dev/null > ~/.ssh/known_hosts)
+	sed -i "" '/.*2222.*/d' ~/.ssh/known_hosts
 }
 
 function isshNoPWD(){
