@@ -6,7 +6,7 @@
 # |_| |___/ |___/ |_| |_|          /_/\_\_|\__,_|\___/ 
 
 
-ROOT_DIR=`pwd`
+ROOT_DIR=`cat ~/.issh/rootdir`
 
 function ilog(){
 	echo -e "\033[32m[I]:$1 \033[0m"
@@ -62,7 +62,7 @@ function isshNoPWD(){
 		&& (cat /tmp/id_rsa.pub >> /var/root/\.ssh/authorized_keys;touch /var/root/\.ssh/xia0_ssh.lock) \
 		|| (mv /tmp/id_rsa.pub /var/root/\.ssh/authorized_keys;touch  /var/root/\.ssh/xia0_ssh.lock)"
 
-		cat /dev/null > ~/.ssh/known_hosts
+		# cat /dev/null > ~/.ssh/known_hosts
 		ssh root@localhost -p 2222 -o stricthostkeychecking=no $sshScript 2> /dev/null
 
 		ilog "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
@@ -254,10 +254,16 @@ EOF'
 		}
 
 		mkdir -p /tmp/isshAppTest
+		# CFBundleDisplayName
 		# sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -print0 | \
 		# xargs -0 -i echo \"root@localhost:{}\" /tmp/isshAppTest " | xargs -n 2
-		sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\"" | \
-		xargs -I% sh -c "echo "\n%"; scp -P 2222 -r root@localhost:\"'%'\" /tmp/isshAppTest > /dev/null 2>&1; defaults read /tmp/isshAppTest/Info.plist CFBundleIdentifier;";
+		# sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\"" | \
+		# xargs -I% sh -c "echo "\n%"; scp -P 2222 -r root@localhost:\"'%'\" /tmp/isshAppTest > /dev/null 2>&1; defaults read /tmp/isshAppTest/Info.plist CFBundleIdentifier;";
+		sshRunCMD "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}\" CFBundleIdentifier; \
+		defaults read \"{}\" CFBundleExecutable; defaults read \"{}\" CFBundleDisplayName; \" \;"
+
+		sshRunCMD "find /Applications/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -exec sh -c \" echo '=========';echo \"{}\";defaults read \"{}\" CFBundleIdentifier; \
+		defaults read \"{}\" CFBundleExecutable; defaults read \"{}\" CFBundleDisplayName; \" \;"
 	fi
 
 	if [[ "$1" = "dump" ]]; then
@@ -266,7 +272,7 @@ EOF'
 
 		if [ ! -f $dumpFile ];then
 			git clone https://github.com/AloneMonkey/frida-ios-dump.git;
-			pip install -r $ROOT_DIR"/frida-ios-dump/requirements.txt" --upgrade
+			pip install --user -r $ROOT_DIR"/frida-ios-dump/requirements.txt" --upgrade
 		fi
 
 		python "$dumpFile" $dumpArgs

@@ -6,9 +6,16 @@ shell_file=$shell_root_dir"/"$shell_file_name
 bash_profile=$HOME"/.bash_profile"
 
 
+
 function xlog(){
     echo "[log]: "$1
 }
+
+if [[ ! -d ~/.issh ]]; then
+	mkdir -p ~/.issh
+fi
+echo "$shell_root_dir" > ~/.issh/rootdir
+
 
 grep 'issh.sh' $bash_profile > /dev/null
 if [ $? -eq 0 ]; then
