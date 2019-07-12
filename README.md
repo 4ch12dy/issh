@@ -2,7 +2,6 @@
 > 自动登录ssh，自动打开端口映射，自动签名debugserver，一键调试，一键shell等等，越狱设备用issh就够了
 
 
-
 ### Install
 
 > Before install, make sure you have installed iproxy,cfgutil cmds
@@ -22,6 +21,8 @@
 - `issh debug [debugArgs:-a pid/processName -x backboard/auto]`
 
   like `issh debug -a wechat` attach the wechat app
+
+  配合[xia0LLDB](https://github.com/4ch12dy/xia0LLDB)食用更加
 
 - `issh dump [dumpArgs:-l]`
 
