@@ -43,35 +43,35 @@
 
 ### Screenshot
 
-![issh-debug](/Users/didi/xia0/shell-script/issh/screenshot/issh-debug.png)
+![issh-debug](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-debug.png?raw=true)
 
 
 
-![issh-device](/Users/didi/xia0/shell-script/issh/screenshot/issh-device.png)
+![issh-device](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-device.png?raw=true)
 
 
 
-![issh-dump](/Users/didi/xia0/shell-script/issh/screenshot/issh-dump.png)
+![issh-dump](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-dump.png?raw=true)
 
 
 
-![issh-install](/Users/didi/xia0/shell-script/issh/screenshot/issh-install.png)
+![issh-install](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-install.png?raw=true)
 
 
 
-![issh-run](/Users/didi/xia0/shell-script/issh/screenshot/issh-run.png)
+![issh-run](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-run.png?raw=true)
 
 
 
-![issh-scp](/Users/didi/xia0/shell-script/issh/screenshot/issh-scp.png)
+![issh-scp](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-scp.png?raw=true)
 
 
 
-![issh-shell](/Users/didi/xia0/shell-script/issh/screenshot/issh-shell.png)
+![issh-shell](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-shell.png?raw=true)
 
 
 
-![issh-show-dylib](/Users/didi/xia0/shell-script/issh/screenshot/issh-show-dylib.png)
+![issh-show-dylib](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-show-dylib.png?raw=true)
 
 ### Credits
 
