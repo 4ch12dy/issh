@@ -2,9 +2,18 @@
 > 自动登录ssh，自动打开端口映射，自动签名debugserver，一键调试，一键shell等等，越狱设备用issh就够了
 
 
+
+**希望把issh打造成一个越狱设备的一键化脚本，如果你有一些比较好的建议:无论是代码优化，新的命令/想法，还是新的需求都可以随意issue或者pr。最终目的就是使得工作更加高效，便捷，省时。不用耗费时间在重复、琐碎的事情上。**
+
+
+
 ### Install
 
 > Before install, make sure you have installed iproxy,cfgutil cmds
+>
+> cfgutil通过在mac App Store中下载apple configurator 2安装后就有这个命令(后面会考虑用其他方式替换这个命令)
+>
+> 另外iOS中的defaults读写plist的命令在[https://repo.chariz.io](https://repo.chariz.io/)源中安装Cephei就有了
 
 - `git clone issh_git_project;`
 - `cd issh`
