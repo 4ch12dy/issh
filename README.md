@@ -40,7 +40,38 @@
 
   显示所有app（包括系统app），包名，显示名，进程名，完整路径等
 
-  
+
+### Screenshot
+
+![issh-debug](/Users/didi/xia0/shell-script/issh/screenshot/issh-debug.png)
+
+
+
+![issh-device](/Users/didi/xia0/shell-script/issh/screenshot/issh-device.png)
+
+
+
+![issh-dump](/Users/didi/xia0/shell-script/issh/screenshot/issh-dump.png)
+
+
+
+![issh-install](/Users/didi/xia0/shell-script/issh/screenshot/issh-install.png)
+
+
+
+![issh-run](/Users/didi/xia0/shell-script/issh/screenshot/issh-run.png)
+
+
+
+![issh-scp](/Users/didi/xia0/shell-script/issh/screenshot/issh-scp.png)
+
+
+
+![issh-shell](/Users/didi/xia0/shell-script/issh/screenshot/issh-shell.png)
+
+
+
+![issh-show-dylib](/Users/didi/xia0/shell-script/issh/screenshot/issh-show-dylib.png)
 
 ### Credits
 
