@@ -6,7 +6,7 @@
 # |_| |___/ |___/ |_| |_|          /_/\_\_|\__,_|\___/ 
 
 
-ROOT_DIR=`cat ~/.issh/rootdir`
+iSSH_ROOT_DIR=`cat ~/.issh/rootdir`
 
 function ilog(){
 	echo -e "\033[32m[I]:$1 \033[0m"
@@ -102,7 +102,7 @@ function printUsage(){
 	printf "issh %-30s %-20s \n" "help/-h" "show this help info"
 }
 
-function issh(){
+function issh(){	
 	# $setCmd
 	# usage/help
 	if [[ "$1" = "help" || "$1" = "-h" || $# == 0 ]]; then
@@ -272,11 +272,12 @@ EOF'
 
 	if [[ "$1" = "dump" ]]; then
 		dumpArgs=${@:2:$#}
-		dumpFile=$ROOT_DIR"/frida-ios-dump/dump.py"; 
+		dumpFile=$iSSH_ROOT_DIR"/frida-ios-dump/dump.py"; 
+		echo $dumpFile
 
 		if [ ! -f $dumpFile ];then
 			git clone https://github.com/AloneMonkey/frida-ios-dump.git;
-			pip install --user -r $ROOT_DIR"/frida-ios-dump/requirements.txt" --upgrade
+			pip install --user -r $iSSH_ROOT_DIR"/frida-ios-dump/requirements.txt" --upgrade
 		fi
 
 		python "$dumpFile" $dumpArgs
