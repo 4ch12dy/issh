@@ -277,7 +277,7 @@ EOF'
 		echo $dumpFile
 
 		if [ ! -f $dumpFile ];then
-			git clone https://github.com/AloneMonkey/frida-ios-dump.git;
+			cd $iSSH_ROOT_DIR && git clone https://github.com/AloneMonkey/frida-ios-dump.git;
 			pip install --user -r $iSSH_ROOT_DIR"/frida-ios-dump/requirements.txt" --upgrade
 		fi
 
