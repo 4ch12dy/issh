@@ -99,6 +99,7 @@ function printUsage(){
 	printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
 	printf "issh %-30s %-20s \n" "run" "execute shell command on connect device"
 	printf "issh %-30s %-20s \n" "respring" "kill SpringBoard"
+	printf "issh %-30s %-20s \n" "ldrestart" "kill all daemon without reJailbreak"
 	printf "issh %-30s %-20s \n" "reboot" "!!!if do reboot, you need reJailbreak!"
 	printf "issh %-30s %-20s \n" "help/-h" "show this help info"
 }
@@ -304,6 +305,10 @@ EOF'
 
 	if [[ "$1" = "respring" ]]; then
 		sshRunCMD "killall -9 SpringBoard"
+	fi
+
+	if [[ "$1" = "ldrestart" ]]; then
+		sshRunCMD "/usr/bin/ldrestart"
 	fi
 
 	if [[ "$1" = "reboot" ]]; then

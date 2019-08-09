@@ -27,19 +27,20 @@
 
 ```bash
 xia0 ~ $ issh -h
-[I]:First Run issh on new idevice, you will only input ssh password twice!
-issh show [dylib/Preferences/apps]  show some info
-issh scp remote_file local_file     cp file from connect device to local
-issh dump                           Use Frida(frida-ios-dump) to dump IPA
-issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug
-issh install                        install app form local to connect device
-issh device                         show some info about device
-issh apps                           show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath)
-issh shell                          get the shell of connect device
-issh clean                          rm authorized_keys and xia0_ssh.lock from device
-issh run                            execute shell command on connect device
-issh respring                       kill SpringBoard
-issh reboot                         !!!if do reboot, you need reJailbreak!
+[I]:First Run issh on new idevice, you will only input ssh password twice! 
+issh show [dylib/Preferences/apps]  show some info       
+issh scp remote_file local_file     cp file from connect device to local 
+issh dump                           Use Frida(frida-ios-dump) to dump IPA 
+issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug 
+issh install                        install app form local to connect device 
+issh device                         show some info about device 
+issh apps                           show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath) 
+issh shell                          get the shell of connect device 
+issh clean                          rm authorized_keys and xia0_ssh.lock from device 
+issh run                            execute shell command on connect device 
+issh respring                       kill SpringBoard     
+issh ldrestart                      kill all daemon without reJailbreak 
+issh reboot                         !!!if do reboot, you need reJailbreak! 
 issh help/-h                        show this help info
 ```
 
