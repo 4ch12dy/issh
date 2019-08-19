@@ -163,6 +163,12 @@ function issh(){
 
 	if [[ "$1" = "scp" ]]; then
 		# _sshRunCMD "cat $2" > "$3"
+		if [[ -f $2 ]]; then
+			ilog "$2 is local file, so cp it to device"
+			scp -P 2222 -r $2 root@localhost:$3
+			return
+		fi
+		ilog "$2 is remote file, so cp it from device"
 		scp -P 2222 -r root@localhost:$2 $3 
 	fi
 
