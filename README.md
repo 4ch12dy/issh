@@ -18,10 +18,16 @@
 > 另外iOS中的defaults读写plist的命令在[https://repo.chariz.io](https://repo.chariz.io/)源中安装Cephei就有了
 
 - `git clone issh_git_project;`
+
 - `cd issh`
+
 - `./install.sh`
+
 - If your shell is bash run: `source ~/.bash_profile` 
+
 - If your shell is zsh run :`source ~/.zshrc`
+
+  
 
 ### Command
 
@@ -29,7 +35,7 @@
 xia0 ~ $ issh -h
 [I]:First Run issh on new idevice, you will only input ssh password twice! 
 issh show [dylib/Preferences/apps]  show some info       
-issh scp remote_file local_file     cp file from connect device to local 
+issh scp remote/local local/remote  cp file from connect device or to device 
 issh dump                           Use Frida(frida-ios-dump) to dump IPA 
 issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug 
 issh install                        install app form local to connect device 
@@ -41,12 +47,16 @@ issh run                            execute shell command on connect device
 issh respring                       kill SpringBoard     
 issh ldrestart                      kill all daemon without reJailbreak 
 issh reboot                         !!!if do reboot, you need reJailbreak! 
-issh help/-h                        show this help info
+issh help/-h                        show this help info 
 ```
 
 - `issh shell`
 
   get the shell of connect device
+
+- `issh scp`
+
+  copy file from connect device or copy local file to connect device
 
 - `issh debug [debugArgs:-a pid/processName -x backboard/auto]`
 
@@ -56,15 +66,17 @@ issh help/-h                        show this help info
 
 - `issh dump [dumpArgs:-l]`
 
+  Use  frida-ios-dump, auto download and run
+
   用的frida-ios-dump脚本，会自动下载并运行
 
 - `issh run "cmd"`
 
   run shell command on connect idevice like `issh run ls`
 
-- `issh respring/reboot`
+- `issh respring/reboot/ldrestart`
 
-  注销和重启设备
+  注销、重启、kill所有守护进程但不重启（保留越狱环境）
 
 - `issh apps`
 

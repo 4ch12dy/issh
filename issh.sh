@@ -89,7 +89,7 @@ function checkIproxy(){
 function printUsage(){
 	ilog "First Run issh on new idevice, you will only input ssh password twice!"
 	printf "issh %-30s %-20s \n" "show [dylib/Preferences/apps]" "show some info" 
-	printf "issh %-30s %-20s \n" "scp remote_file local_file" "cp file from connect device to local"
+	printf "issh %-30s %-20s \n" "scp remote/local local/remote" "cp file from connect device or to device"
 	printf "issh %-30s %-20s \n" "dump" "Use Frida(frida-ios-dump) to dump IPA"
 	printf "issh %-30s %-20s \n" "debug [-a wechat -x backboard]" "auto sign debugserver[Test on iOS9/10/11/12] and happy to debug"
 	printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
@@ -163,7 +163,7 @@ function issh(){
 
 	if [[ "$1" = "scp" ]]; then
 		# _sshRunCMD "cat $2" > "$3"
-		if [[ -f $2 ]]; then
+		if [[ -f $2 || -d $2 ]]; then
 			ilog "$2 is local file, so cp it to device"
 			scp -P 2222 -r $2 root@localhost:$3
 			return
