@@ -9,12 +9,23 @@
 
 iSSH_ROOT_DIR=`cat ~/.issh/rootdir`
 
-function ilog(){
-	echo -e "\033[32m[I]:$1 \033[0m"
+function iSSHILOG(){
+
+	echo -e "\033[32m[*]:$1 \033[0m"
+}
+
+function iSSHELOG(){
+	
+	echo -e "\033[31m[-]:$1 \033[0m"
+	
+}
+
+function iSSHDLOG(){
+	echo "[DEBUG]:$1" > /dev/null
 }
 
 function sshRunCMD(){
-	ilog "Run $1"
+	iSSHILOG "Run $1"
 	ssh root@localhost -p 2222 -o stricthostkeychecking=no "$1"
 }
 
@@ -40,23 +51,27 @@ function removeRSA(){
 
 function isshNoPWD(){
 	if [[ "$1" = "clean" ]]; then
-		ilog "rm authorized_keys and xia0_ssh.lock from device"
+		iSSHILOG "rm authorized_keys and xia0_ssh.lock from device"
 		sshRunCMD "rm /var/root/\.ssh/authorized_keys; rm /var/root/\.ssh/xia0_ssh.lock"
-		return
+		return 0
 	fi
 	removeRSA
 	#  check is need password
 	ssh -p 2222 -o PasswordAuthentication=no -o StrictHostKeyChecking=no root@localhost "exit" 2>/dev/null ; 
+
 	if [[ $? == 0 ]]; then
 
-		ilog "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
+		iSSHILOG "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
 
 	else
 
-		ilog "scp id_rsa.pub to connect iDevice [1/2]"
+		iSSHILOG "scp id_rsa.pub to connect iDevice [1/2]"
 		scp -P 2222 -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub root@localhost:/tmp > /dev/null 2>&1
+		if [[ $? == 1 ]]; then
+			return 1
+		fi
 
-		ilog "add id_rsa.pub to authorized_keys [2/2]"
+		iSSHILOG "add id_rsa.pub to authorized_keys [2/2]"
 		
 		sshScript="[ -d /var/root/\.ssh ] \
 		|| (mkdir -p /var/root/\.ssh);	\
@@ -67,9 +82,10 @@ function isshNoPWD(){
 		# cat /dev/null > ~/.ssh/known_hosts
 		ssh root@localhost -p 2222 -o stricthostkeychecking=no $sshScript 2> /dev/null
 		
-		ilog "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
+		iSSHILOG "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
 	fi
 
+	return 0
 }
 
 
@@ -78,16 +94,16 @@ function checkIproxy(){
 	ret=`lsof -i tcp:2222 | grep "iproxy"`
 	if [[ "$?" = "0" ]]; then
 		iproxyPid=`echo $ret | awk '{print $2}'`
-		ilog "iproxy process for 2222 port alive, pid=$iproxyPid"
+		iSSHILOG "iproxy process for 2222 port alive, pid=$iproxyPid"
 	else
-		ilog "iproxy process for 2222 port dead, start iproxy 2222 22"
+		iSSHILOG "iproxy process for 2222 port dead, start iproxy 2222 22"
 		(iproxy 2222 22 &) > /dev/null 2>&1
 		sleep 1
 	fi
 }
 
 function printUsage(){
-	ilog "First Run issh on new idevice, you will only input ssh password twice!"
+	iSSHILOG "First Run issh on new idevice, you will only input ssh password twice!"
 	printf "issh %-30s %-20s \n" "show [dylib/Preferences/apps]" "show some info" 
 	printf "issh %-30s %-20s \n" "scp remote/local local/remote" "cp file from connect device or to device"
 	printf "issh %-30s %-20s \n" "dump" "Use Frida(frida-ios-dump) to dump IPA"
@@ -121,6 +137,11 @@ function issh(){
 	else
 		isshNoPWD
 	fi
+	
+	if [[ $? == 1 ]]; then
+		iSSHELOG "failed to connect iDevice, check the usb connect!"
+		return 1
+	fi
 
 	# xia0 command
 	if [ "$1" = "show" ];then
@@ -147,6 +168,7 @@ function issh(){
 		esac
 	fi
 
+
 	if [[ "$1" = "device" ]]; then
 		device_name=`cfgutil get name`
 		device_osver=`cfgutil get firmwareVersion`
@@ -164,22 +186,23 @@ function issh(){
 	if [[ "$1" = "scp" ]]; then
 		# _sshRunCMD "cat $2" > "$3"
 		if [[ -f $2 || -d $2 ]]; then
-			ilog "$2 is local file, so cp it to device"
+			iSSHILOG "$2 is local file, so cp it to device"
 			scp -P 2222 -r $2 root@localhost:$3
 			return
 		fi
-		ilog "$2 is remote file, so cp it from device"
+		iSSHILOG "$2 is remote file, so cp it from device"
 		scp -P 2222 -r root@localhost:$2 $3 
 	fi
+
 
 	if [[ "$1" = "debug" ]]; then
 		debugArgs=${@:2:$#}
 		#  create iOSRE dir if need
 		ret=`iDirExsit /iOSRE`
 		if [[ "$ret" = "1" ]]; then
-			ilog "iOSRE dir exist"
+			iSSHILOG "iOSRE dir exist"
 		else
-			ilog "iOSRE dir not exist"
+			iSSHILOG "iOSRE dir not exist"
 			sshRunCMD "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
 		fi
 		
@@ -187,9 +210,9 @@ function issh(){
 		ret=`lsof -i tcp:1234 | grep "iproxy"`
 		if [[ "$?" = "0" ]]; then
 			iproxyPid=`echo $ret | awk '{print $2}'`
-			ilog "iproxy process for 1234 port alive, pid=$iproxyPid"
+			iSSHILOG "iproxy process for 1234 port alive, pid=$iproxyPid"
 		else
-			ilog "iproxy process for 1234 port dead, start iproxy 1234 1234"
+			iSSHILOG "iproxy process for 1234 port dead, start iproxy 1234 1234"
 			(iproxy 1234 1234 &) > /dev/null 2>&1
 			sleep 1
 		fi
@@ -203,10 +226,10 @@ function issh(){
 		# check tools debugserver
 		ret=`iFileExsit /iOSRE/tools/debugserver`
 		if [[ "$ret" = "1" ]]; then
-			ilog "/iOSRE/tools/debugserver file exist, Start debug..."
+			iSSHILOG "/iOSRE/tools/debugserver file exist, Start debug..."
 			sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 $debugArgs"
 		else
-			ilog "/iOSRE/tools/debugserver file not exist"
+			iSSHILOG "/iOSRE/tools/debugserver file not exist"
 
 			# create ent.xml 
 			sshRunCMD 'cat > /iOSRE/tmp/ent.xml << EOF
@@ -259,7 +282,8 @@ EOF'
 		cfgutil install-app "$2"
 	fi
 
-	if [[ "$1" =~ "app" ]]; then
+
+	if [[ "$1" = "apps" ]]; then
 		function handleXargs(){
 			infoPlist=$1
 			scp -P 2222 -r "root@localhost:$infoPlist" /tmp/isshAppTest
@@ -278,6 +302,22 @@ EOF'
 		defaults read \"{}/Info.plist\" CFBundleExecutable; defaults read \"{}/Info.plist\" CFBundleDisplayName; \" \;"
 	fi
 
+	if [[ "$1" = "rapp" ]]; then
+		sss=$(sshRunCMDClean "ps -e | egrep '/var/containers/Bundle/Application|/Applications' | grep -v egrep" | awk '{printf "%s \n", $4}')
+		echo $sss
+
+		# while read line
+		# do
+		# 	echo $line
+		# 	echo "\n"
+
+		# done <<EOF
+		# $PSOUT
+		# EOF
+
+		return
+	fi
+
 	if [[ "$1" = "dump" ]]; then
 		dumpArgs=${@:2:$#}
 		dumpFile=$iSSH_ROOT_DIR"/frida-ios-dump/dump.py"; 
@@ -294,10 +334,10 @@ EOF'
 	if [[ "$1" = "iOSRE" ]]; then
 		ret=`iDirExsit /iOSRE`
 		if [[ "$ret" = "1" ]]; then
-			ilog "iOSRE dir exist"
+			iSSHILOG "iOSRE dir exist"
 		else
-			ilog "iOSRE dir not exist"
-			sshRunCMD "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
+			iSSHILOG "iOSRE dir not exist"
+			sshRunCMDC "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
 		fi
 	fi
 
