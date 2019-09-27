@@ -64,6 +64,11 @@ function isshNoPWD(){
 		iSSHILOG "++++++++++++++++++ Nice to Work :) +++++++++++++++++++++";
 
 	else
+		# check id_rsa.pub is exist?
+		if [[ ! -f ~/.ssh/id_rsa.pub ]]; then
+			iSSHELOG "~/.ssh/id_rsa.pub is not exist, you should use ssh-keygen to create it!"
+			return 1
+		fi
 
 		iSSHILOG "scp id_rsa.pub to connect iDevice [1/2]"
 		scp -P 2222 -o StrictHostKeyChecking=no ~/.ssh/id_rsa.pub root@localhost:/tmp > /dev/null 2>&1
@@ -184,14 +189,15 @@ function issh(){
 	fi
 
 	if [[ "$1" = "scp" ]]; then
+		targetFile="$2"
 		# _sshRunCMD "cat $2" > "$3"
-		if [[ -f $2 || -d $2 ]]; then
-			iSSHILOG "$2 is local file, so cp it to device"
-			scp -P 2222 -r $2 root@localhost:$3
+		if [[ -f "$targetFile" || -d "$targetFile" ]]; then
+			iSSHILOG "$targetFile is local file, so cp it to device"
+			scp -P 2222 -r "$targetFile" root@localhost:$3
 			return
 		fi
-		iSSHILOG "$2 is remote file, so cp it from device"
-		scp -P 2222 -r root@localhost:$2 $3 
+		iSSHILOG "$targetFile is remote file, so cp it from device"
+		scp -P 2222 -r root@localhost:$targetFile $3
 	fi
 
 
