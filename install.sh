@@ -12,22 +12,22 @@ function xlog(){
 }
 
 if [[ ! -d ~/.issh ]]; then
-	mkdir -p ~/.issh
+    mkdir -p ~/.issh
 fi
 
 echo "$shell_root_dir" > ~/.issh/rootdir
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
 
-	sh_profile=$zsh_profile
+    sh_profile=$zsh_profile
 
 elif [[ "$SHELL" = "/bin/bash" ]]; then
 
-	sh_profile=$bash_profile
+    sh_profile=$bash_profile
 
 else
-	echo "Not Support shell:$SHELL"
-	exit
+    echo "Not Support shell:$SHELL"
+    exit
 fi
 
 
