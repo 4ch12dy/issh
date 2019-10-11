@@ -96,6 +96,13 @@ function isshNoPWD(){
 
 
 function checkIproxy(){
+    if hash iproxy 2>/dev/null; then 
+        iSSHILOG "iproxy install. lets go"
+    else 
+        iSSHELOG "iproxy not install. try \"brew install usbmuxd\""
+        return 1
+    fi
+
     ret=`lsof -i tcp:2222 | grep "iproxy"`
     if [[ "$?" = "0" ]]; then
         iproxyPid=`echo $ret | awk '{print $2}'`
@@ -134,6 +141,11 @@ function issh(){
     fi
 
     checkIproxy
+
+    if [[ $? == 1 ]]; then
+        iSSHELOG "something wrong in iproxy, please check it"
+        return 1
+    fi
 
     # run isshNoPWD for no pwd login later
     if [[ "$1" = "clean" ]]; then
