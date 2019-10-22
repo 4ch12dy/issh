@@ -244,8 +244,8 @@ function issh(){
         # kill app process if use -x backboard  
         if [[ "$debugArgs" =~ "backboard" ]]; then
             iSSHILOG "kill app because debug with -x backboard"
-            tmpArr=(${curAppPath// / })
-            tmpAppPath=${tmpArr[0]}
+            
+            tmpAppPath=$(echo $debugArgs | awk '{print $NF}')
             tmpAppExename=$(basename $tmpAppPath)
             killAppIfAlive="ps -e | grep $tmpAppPath | grep -v grep; [[ $? == 0 ]] && (killall -9 $tmpAppExename 2> /dev/null)"
             sshRunCMD "$killAppIfAlive"
