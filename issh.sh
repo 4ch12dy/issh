@@ -340,9 +340,12 @@ EOF'
            
             # appBundleid=$(sshRunCMDClean "defaults read $appDir/Info.plist CFBundleIdentifier")
             # echo $appBundleid
-            appPidArr[${#appPidArr[*]}]="$appPid"
-            appPathArr[${#appPathArr[*]}]="$appPath"
-
+            array=(${appPath//// })
+            if [[ ${#array[@]} -eq 7 || ${#array[@]} -eq 33 ]]; then
+                appPidArr[${#appPidArr[*]}]="$appPid"
+                appPathArr[${#appPathArr[*]}]="$appPath"
+            fi
+            
         done <<EOF
 $PSOUT
 EOF
