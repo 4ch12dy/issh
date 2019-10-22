@@ -320,19 +320,47 @@ EOF'
         defaults read \"{}/Info.plist\" CFBundleExecutable; defaults read \"{}/Info.plist\" CFBundleDisplayName; \" \;"
     fi
 
-    if [[ "$1" = "rapp" ]]; then
-        sss=$(sshRunCMDClean "ps -e | egrep '/var/containers/Bundle/Application|/Applications' | grep -v egrep" | awk '{printf "%s \n", $4}')
-        echo $sss
+    if [[ "$1" = "app" ]]; then
+        # PSOUT=$(sshRunCMDClean "ps -ef | egrep '/var/containers/Bundle/Application|/Applications' | grep -v egrep")
+        # echo $PSOUT
 
-        # while read line
-        # do
-        #   echo $line
-        #   echo "\n"
+        PSOUT=$(sshRunCMDClean "ps -ef  | grep -v grep | egrep '/var/containers/Bundle/Application|/Applications'" )
+        # echo $sss
+        appPathArr=()
+        appPidArr=()
+        while read line 
+        do
+            # x=`echo "$line" | sed -e s/\>/\\\\\\>/g`
+ 
+            process=( $line )
+            appPid=${process[1]}
+            appPath=${process[7]}
 
-        # done <<EOF
-        # $PSOUT
-        # EOF
+            # appDir=$(dirname $appPath)
+           
+            # appBundleid=$(sshRunCMDClean "defaults read $appDir/Info.plist CFBundleIdentifier")
+            # echo $appBundleid
+            appPidArr[${#appPidArr[*]}]="$appPid"
+            appPathArr[${#appPathArr[*]}]="$appPath"
 
+        done <<EOF
+$PSOUT
+EOF
+        printf "==========\n"
+        printf "%-5s %-25s %-50s\n" "Pid" "Bundleid" "$App path"
+        for i in "${!appPathArr[@]}"; do 
+            curAppDir=$(dirname ${appPathArr[$i]})
+            curAppBundleid=$(sshRunCMDClean "defaults read $curAppDir/Info.plist CFBundleIdentifier")
+            curAppPid=${appPidArr[$i]}
+            curAppPath=${appPathArr[$i]}
+
+            array=(${curAppPath//// })
+            if [[ ${#array[@]} -eq 7 || ${#array[@]} -eq 33 ]]; then
+                printf "%-5s %-25s %-50s\n" "$curAppPid" "$curAppBundleid" "$curAppPath"
+            fi
+            
+        done
+        printf "==========\n"
         return
     fi
 
