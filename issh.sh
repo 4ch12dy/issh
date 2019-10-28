@@ -156,7 +156,7 @@ function issh(){
     fi
     
     if [[ $? == 1 ]]; then
-        iSSHELOG "failed to connect iDevice, check the usb connect!"
+        iSSHELOG "failed to connect idevice, check the usb connect and make sure device jailbroken!"
         return 1
     fi
 
