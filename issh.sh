@@ -122,7 +122,7 @@ function printUsage(){
     printf "issh %-30s %-20s \n" "debug [-a wechat -x backboard]" "auto sign debugserver[Test on iOS9/10/11/12] and happy to debug"
     printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
     printf "issh %-30s %-20s \n" "device" "show some info about device"
-    printf "issh %-30s %-20s \n" "apps" "show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath)"
+    printf "issh %-30s %-20s \n" "apps" "show current running app info"
     printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
     printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
     printf "issh %-30s %-20s \n" "run" "execute shell command on connect device"
@@ -172,7 +172,7 @@ function issh(){
                 ;;
             
             app* )
-                cfgutil get installedApps
+                issh listApp
                 ;;  
 
             profile* )
@@ -311,7 +311,7 @@ EOF'
     fi
 
 
-    if [[ "$1" = "apps" ]]; then
+    if [[ "$1" = "listApp" ]]; then
         function handleXargs(){
             infoPlist=$1
             scp -P 2222 -r "root@localhost:$infoPlist" /tmp/isshAppTest
@@ -330,7 +330,7 @@ EOF'
         defaults read \"{}/Info.plist\" CFBundleExecutable; defaults read \"{}/Info.plist\" CFBundleDisplayName; \" \;"
     fi
 
-    if [[ "$1" = "app" ]]; then
+    if [[ "$1" =~ "app" ]]; then
         # PSOUT=$(sshRunCMDClean "ps -ef | egrep '/var/containers/Bundle/Application|/Applications' | grep -v egrep")
         # echo $PSOUT
 
