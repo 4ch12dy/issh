@@ -33,14 +33,14 @@
 
 ```bash
 xia0 ~ $ issh -h
-[I]:First Run issh on new idevice, you will only input ssh password twice! 
+[*]:First Run issh on new idevice, you will only input ssh password twice! 
 issh show [dylib/Preferences/apps]  show some info       
 issh scp remote/local local/remote  cp file from connect device or to device 
 issh dump                           Use Frida(frida-ios-dump) to dump IPA 
 issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug 
 issh install                        install app form local to connect device 
 issh device                         show some info about device 
-issh apps                           show all app info(Bundleid,BundleExecutable,BundleDisplayName, Fullpath) 
+issh apps                           show current running app info 
 issh shell                          get the shell of connect device 
 issh clean                          rm authorized_keys and xia0_ssh.lock from device 
 issh run                            execute shell command on connect device 
