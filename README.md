@@ -11,11 +11,7 @@
 
 ### Install
 
-> Before install, make sure you have installed iproxy,cfgutil cmds
->
-> cfgutil通过在mac App Store中下载apple configurator 2安装后就有这个命令(后面会考虑用其他方式替换这个命令)
->
-> 另外iOS中的defaults读写plist的命令在[https://repo.chariz.io](https://repo.chariz.io/)源中安装Cephei就有了
+> 需要在设备上安装defaults命令，iOS中的defaults读写plist的命令在[https://repo.chariz.io](https://repo.chariz.io/)源中安装Cephei就有了
 
 - `git clone issh_git_project;`
 
@@ -33,21 +29,23 @@
 
 ```bash
 xia0 ~ $ issh -h
-[*]:First Run issh on new idevice, you will only input ssh password twice! 
-issh show [dylib/Preferences/apps]  show some info       
-issh scp remote/local local/remote  cp file from connect device or to device 
-issh dump                           Use Frida(frida-ios-dump) to dump IPA 
-issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug 
-issh install                        install app form local to connect device 
-issh device                         show some info about device 
-issh apps                           show current running app info 
-issh shell                          get the shell of connect device 
-issh clean                          rm authorized_keys and xia0_ssh.lock from device 
-issh run                            execute shell command on connect device 
-issh respring                       kill SpringBoard     
-issh ldrestart                      kill all daemon without reJailbreak 
-issh reboot                         !!!if do reboot, you need reJailbreak! 
-issh help/-h                        show this help info 
+issh show [dylib/Preferences/apps]  show some info
+issh scp remote/local local/remote  cp file from connect device or to device
+issh dump                           Use Frida(frida-ios-dump) to dump IPA
+issh debug [-a wechat -x backboard] auto sign debugserver[Test on iOS9/10/11/12] and happy to debug
+issh install                        install app form local to connect device
+issh device                         show some info about device
+issh screen                         get screenshot of device now
+issh log                            show system log of device
+issh crashlog                       get crash log info from device
+issh apps                           show current running app info
+issh shell                          get the shell of connect device
+issh clean                          rm authorized_keys and xia0_ssh.lock from device
+issh run                            execute shell command on connect device
+issh respring                       kill SpringBoard
+issh ldrestart                      kill all daemon without reJailbreak
+issh reboot                         !!!if do reboot, you need reJailbreak!
+issh help/-h                        show this help info
 ```
 
 - `issh shell`
