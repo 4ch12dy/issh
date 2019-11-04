@@ -122,6 +122,9 @@ function printUsage(){
     printf "issh %-30s %-20s \n" "debug [-a wechat -x backboard]" "auto sign debugserver[Test on iOS9/10/11/12] and happy to debug"
     printf "issh %-30s %-20s \n" "install" "install app form local to connect device"
     printf "issh %-30s %-20s \n" "device" "show some info about device"
+    printf "issh %-30s %-20s \n" "screen" "get screenshot of device now"
+    printf "issh %-30s %-20s \n" "log" "show system log of device"
+    printf "issh %-30s %-20s \n" "crashlog" "get crash log info from device"
     printf "issh %-30s %-20s \n" "apps" "show current running app info"
     printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
     printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
@@ -137,7 +140,123 @@ function issh(){
     # usage/help
     if [[ "$1" = "help" || "$1" = "-h" || $# == 0 ]]; then
         printUsage
-        return  
+        return
+    fi
+
+    if [[ "$1" = "device" ]]; then
+        # brew uninstall ideviceinstaller
+        # brew uninstall libimobiledevice
+        # brew uninstall usbmuxd
+        # brew install usbmuxd --HEAD
+        # brew install --HEAD libimobiledevice
+        # brew unlink libimobiledevice && brew link libimobiledevice
+        # brew install --HEAD ideviceinstaller
+        # brew unlink ideviceinstaller && brew link ideviceinstaller
+        # sudo chmod -R 777 /var/db/lockdown
+        if hash ideviceinfo 2>/dev/null; then 
+            iSSHILOG "libimobiledevice installed. continue..."
+        else
+            iSSHELOG "libimobiledevice not installed. try \"brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown\""
+            brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown
+            return
+        fi
+
+        DeviceName=`ideviceinfo -k DeviceName`
+        SerialNumber=`ideviceinfo -k SerialNumber`
+        ProductType=`ideviceinfo -k ProductType`
+        ProductVersion=`ideviceinfo -k ProductVersion`
+        ProductName=`ideviceinfo -k ProductName`
+        PhoneNumber=`ideviceinfo -k PhoneNumber`
+        UniqueChipID=`ideviceinfo -k UniqueChipID`
+        UniqueDeviceID=`ideviceinfo -k UniqueDeviceID`
+        InternationalMobileEquipmentIdentity=`ideviceinfo -k InternationalMobileEquipmentIdentity`
+
+        printf "%-20s %-50s \n" "DeviceName" "$DeviceName"
+        printf "%-20s %-50s \n" "ProductName" "$ProductName"
+        printf "%-20s %-50s \n" "ProductType" "$ProductType"
+        printf "%-20s %-50s \n" "ProductVersion" "$ProductVersion"
+        printf "%-20s %-50s \n" "SerialNumber" "$SerialNumber"
+        printf "%-20s %-50s \n" "UCID" "$UniqueChipID"
+        printf "%-20s %-50s \n" "UDID" "$UniqueDeviceID"
+        printf "%-20s %-50s \n" "IMEI" "$InternationalMobileEquipmentIdentity"
+        printf "%-20s %-50s \n" "PhoneNumber" "$PhoneNumber"
+        return
+    fi
+
+    if [[ "$1" = "screen" ]]; then
+        # brew uninstall ideviceinstaller
+        # brew uninstall libimobiledevice
+        # brew uninstall usbmuxd
+        # brew install usbmuxd --HEAD
+        # brew install --HEAD libimobiledevice
+        # brew unlink libimobiledevice && brew link libimobiledevice
+        # brew install --HEAD ideviceinstaller
+        # brew unlink ideviceinstaller && brew link ideviceinstaller
+        # sudo chmod -R 777 /var/db/lockdown
+        if hash ideviceinfo 2>/dev/null; then 
+            iSSHILOG "libimobiledevice installed. continue..."
+        else
+            iSSHELOG "libimobiledevice not installed. try \"brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown\""
+            brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown
+            return
+        fi
+        idevicescreenshot
+        return
+    fi
+
+    if [[ "$1" = "log" ]]; then
+        # brew uninstall ideviceinstaller
+        # brew uninstall libimobiledevice
+        # brew uninstall usbmuxd
+        # brew install usbmuxd --HEAD
+        # brew install --HEAD libimobiledevice
+        # brew unlink libimobiledevice && brew link libimobiledevice
+        # brew install --HEAD ideviceinstaller
+        # brew unlink ideviceinstaller && brew link ideviceinstaller
+        # sudo chmod -R 777 /var/db/lockdown
+        if hash ideviceinfo 2>/dev/null; then 
+            iSSHILOG "libimobiledevice installed. continue..."
+        else
+            iSSHELOG "libimobiledevice not installed. try \"brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown\""
+            brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown
+            return
+        fi
+        idevicesyslog
+        return
+    fi
+
+    if [[ "$1" = "crashlog" ]]; then
+        # brew uninstall ideviceinstaller
+        # brew uninstall libimobiledevice
+        # brew uninstall usbmuxd
+        # brew install usbmuxd --HEAD
+        # brew install --HEAD libimobiledevice
+        # brew unlink libimobiledevice && brew link libimobiledevice
+        # brew install --HEAD ideviceinstaller
+        # brew unlink ideviceinstaller && brew link ideviceinstaller
+        # sudo chmod -R 777 /var/db/lockdown
+        if hash ideviceinfo 2>/dev/null; then 
+            iSSHILOG "libimobiledevice installed. continue..."
+        else
+            iSSHELOG "libimobiledevice not installed. try \"brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown\""
+            brew install --HEAD libimobiledevice;sudo chmod -R 777 /var/db/lockdown
+            return
+        fi
+        idevicecrashreport ${@:2:$#}
+        return
+    fi
+
+    if [[ "$1" = "install" ]]; then
+        if hash ideviceinstaller 2>/dev/null; then
+            iSSHILOG "ideviceinstaller installed. continue..."
+        else
+            iSSHELOG "ideviceinstaller not installed. try \"brew install --HEAD ideviceinstaller\""
+            brew install --HEAD ideviceinstaller
+            return
+        fi
+
+        ideviceinstaller -i $2
+        return
     fi
 
     checkIproxy
@@ -172,32 +291,11 @@ function issh(){
                 ;;
             
             app* )
-                issh listApp
-                ;;  
-
-            profile* )
-                
-                cfgutil get provisioningProfiles
-                
+                issh listApp                
                 ;;
             *)
                 ;;
         esac
-    fi
-
-
-    if [[ "$1" = "device" ]]; then
-        device_name=`cfgutil get name`
-        device_osver=`cfgutil get firmwareVersion`
-        device_type=`cfgutil get deviceType`
-        device_UDID=`cfgutil get UDID`
-        device_serial=`cfgutil get serialNumber`
-
-        printf "%-20s %-20s \n" "DeviceName" "$device_name"
-        printf "%-20s %-20s \n" "OSVersion" "$device_osver"
-        printf "%-20s %-20s \n" "DeviceType" "$device_type"
-        printf "%-20s %-20s \n" "UDID" "$device_UDID"
-        printf "%-20s %-20s \n" "SerialNumber" "$device_serial"
     fi
 
     if [[ "$1" = "scp" ]]; then
@@ -304,10 +402,6 @@ EOF'
             sshRunCMD "/iOSRE/tools/debugserver 127.0.0.1:1234 $debugArgs"
         fi
 
-    fi
-
-    if [[ "$1" = "install" ]]; then
-        cfgutil install-app "$2"
     fi
 
 
