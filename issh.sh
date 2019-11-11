@@ -126,6 +126,7 @@ function printUsage(){
     printf "issh %-30s %-20s \n" "log" "show system log of device"
     printf "issh %-30s %-20s \n" "crashlog" "get crash log info from device"
     printf "issh %-30s %-20s \n" "apps" "show current running app info"
+    printf "issh %-30s %-20s \n" "fixnetwork" "fix cydia can not connect internet by remove network config "
     printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
     printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
     printf "issh %-30s %-20s \n" "run" "execute shell command on connect device"
@@ -492,6 +493,10 @@ EOF
             iSSHILOG "iOSRE dir not exist"
             sshRunCMDC "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
         fi
+    fi
+
+    if [[ "$1" = "fixnetwork" ]]; then
+        sshRunCMD "rm /Library/Preferences/com.apple.networkextension.plist /Library/Preferences/com.apple.networkextension.necp.plist /Library/Preferences/com.apple.networkextension.cache.plist"
     fi
 
     if [[ "$1" = "run" ]]; then
