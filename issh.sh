@@ -419,6 +419,12 @@ EOF'
             scp -P 2222 -r "root@localhost:$infoPlist" /tmp/isshAppTest
         }
 
+        ret=`sshRunCMDClean "hash defaults > /dev/null 2>&1 && echo 1 || echo 0"`
+        if [[ "$ret" = "0" ]]; then
+            iSSHELOG "defaults not exist. install defaults from https://xia0z.github.io"
+            return
+        fi
+
         mkdir -p /tmp/isshAppTest
         # CFBundleDisplayName
         # sshRunCMDClean "find /var/containers/Bundle/Application/ -regex \"[^\.]*/[^\.]*\.app/Info\.plist$\" -print0 | \
@@ -435,6 +441,11 @@ EOF'
     if [[ "$1" =~ "app" ]]; then
         # PSOUT=$(sshRunCMDClean "ps -ef | egrep '/var/containers/Bundle/Application|/Applications' | grep -v egrep")
         # echo $PSOUT
+        ret=`sshRunCMDClean "hash defaults > /dev/null 2>&1 && echo 1 || echo 0"`
+        if [[ "$ret" = "0" ]]; then
+            iSSHELOG "defaults not exist. install defaults from https://xia0z.github.io"
+            return
+        fi
 
         PSOUT=$(sshRunCMDClean "ps -ef  | grep -v grep | egrep '/var/containers/Bundle/Application|/Applications'" )
         # echo $sss
