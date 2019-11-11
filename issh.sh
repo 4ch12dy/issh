@@ -322,6 +322,12 @@ function issh(){
             iSSHILOG "iOSRE dir not exist"
             sshRunCMD "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
         fi
+
+        ret=`iFileExsit /Developer/usr/bin/debugserver`
+        if [[ "$ret" = "0" ]]; then
+            iSSHELOG "/Developer/usr/bin/debugserver not exist. please connect idevice to Xcode"
+            return
+        fi
         
         # check iproxy 1234 port is open?
         ret=`lsof -i tcp:1234 | grep "iproxy"`
