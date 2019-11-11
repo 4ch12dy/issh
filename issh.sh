@@ -326,6 +326,7 @@ function issh(){
         ret=`iFileExsit /Developer/usr/bin/debugserver`
         if [[ "$ret" = "0" ]]; then
             iSSHELOG "/Developer/usr/bin/debugserver not exist. please connect idevice to Xcode"
+            iSSHELOG "also you can get all iOS DeviceSupport file at https://github.com/iGhibli/iOS-DeviceSupport"
             return
         fi
         
