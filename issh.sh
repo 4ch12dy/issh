@@ -517,6 +517,24 @@ EOF
         sshRunCMD "rm /Library/Preferences/com.apple.networkextension.plist /Library/Preferences/com.apple.networkextension.necp.plist /Library/Preferences/com.apple.networkextension.cache.plist"
     fi
 
+    if [[ "$1" = "xdu" ]]; then
+        shellCMD="echo "========";path=$2;du -k -d 0 \$path/* 2>/dev/null | sort -hr | awk '
+        function keep2(x){
+            printf(\"%.1f\", x)
+        }
+        function human(x) {
+            if (x<1000) {return x \"K\"} else {x/=1024}
+            s=\"MGTEPZY\";
+            while (x>=1000 && length(s)>1)
+                {x/=1024; s=substr(s,2)}
+            return keep2(x) substr(s,1,1)
+        }
+        {sub(/^[0-9]+/, human(\$1)); print}' "
+        # sshRunCMD "du $2 -sh * | sort -r -h"
+        sshRunCMD "$shellCMD"
+    fi
+
+
     if [[ "$1" = "run" ]]; then
         sshRunCMD "$2"
     fi
