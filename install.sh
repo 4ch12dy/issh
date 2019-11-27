@@ -17,7 +17,7 @@ fi
 
 echo "$shell_root_dir" > ~/.issh/rootdir
 
-if [[ "$SHELL" = "/bin/zsh" ]]; then
+if [[ "$SHELL" = "/bin/zsh" || "$SHELL" = "/usr/local/bin/zsh" ]]; then
 
     sh_profile=$zsh_profile
 
