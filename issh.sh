@@ -8,6 +8,10 @@
 
 
 iSSH_ROOT_DIR=`cat ~/.issh/rootdir`
+iSSH_REMOTE_IP="$HOME/.issh/remote-ip"
+iSSH_REMOTE_PORT="$HOME/.issh/remote-port"
+REMOTE_IP="localhost"
+REMOTE_PORT="2222"
 
 function iSSHILOG(){
 
@@ -26,11 +30,11 @@ function iSSHDLOG(){
 
 function sshRunCMD(){
     iSSHILOG "Run $1"
-    ssh root@localhost -p 2222 -o stricthostkeychecking=no "$1"
+    ssh root@$REMOTE_IP -p $REMOTE_PORT -o stricthostkeychecking=no "$1"
 }
 
 function sshRunCMDClean(){
-    ssh root@localhost -p 2222 "$1" 
+    ssh root@$REMOTE_IP -p $REMOTE_PORT "$1" 
 }
 
 function iFileExsit(){
@@ -57,7 +61,7 @@ function isshNoPWD(){
     fi
     removeRSA
     #  check is need password
-    ssh -p 2222 -o PasswordAuthentication=no -o StrictHostKeyChecking=no root@localhost "exit" 2>/dev/null ; 
+    ssh -p $REMOTE_PORT -o PasswordAuthentication=no -o StrictHostKeyChecking=no root@$REMOTE_IP "exit" 2>/dev/null ; 
 
     if [[ $? == 0 ]]; then
 
@@ -136,12 +140,40 @@ function printUsage(){
     printf "issh %-30s %-20s \n" "help/-h" "show this help info"
 }
 
-function issh(){    
+
+function initIPAndPort(){
+    if [[ -f $iSSH_REMOTE_IP ]]; then
+        REMOTE_IP=$(cat $iSSH_REMOTE_IP)
+        REMOTE_PORT="22"
+    else
+        REMOTE_IP="localhost"
+        REMOTE_PORT="2222"
+    fi
+}
+
+function issh(){
+    
+    initIPAndPort
+
     # $setCmd
     # usage/help
     if [[ "$1" = "help" || "$1" = "-h" || $# == 0 ]]; then
         printUsage
         return
+    fi
+
+    if [[ "$1" = "ip" ]]; then
+        if [[ "$2" = "-s" || "$2" = "set" ]]; then
+
+            echo "$3" > $iSSH_REMOTE_IP
+
+        elif [[ "$2" = "-r" || "$2" = "remove" ]]; then
+            test -f $iSSH_REMOTE_IP && rm $iSSH_REMOTE_IP
+        else
+            test -f $iSSH_REMOTE_IP && cat $iSSH_REMOTE_IP || XADBILOG "not set remote ip"
+        fi
+
+        return 
     fi
 
     if [[ "$1" = "device" ]]; then
@@ -260,11 +292,14 @@ function issh(){
         return
     fi
 
-    checkIproxy
-
-    if [[ $? == 1 ]]; then
-        iSSHELOG "something wrong in iproxy, please check it"
-        return 1
+    if [[ $REMOTE_IP = "localhost" ]]; then
+        checkIproxy
+        if [[ $? == 1 ]]; then
+            iSSHELOG "something wrong in iproxy, please check it"
+            return 1
+        fi
+    else
+        iSSHILOG "ip is not localhost, not need iproxy"
     fi
 
     # run isshNoPWD for no pwd login later
@@ -323,8 +358,9 @@ function issh(){
             sshRunCMD "mkdir -p /iOSRE/tmp;mkdir -p /iOSRE/dylib;mkdir -p /iOSRE/deb;mkdir -p /iOSRE/tools"
         fi
 
-        ret=`iFileExsit /Developer/usr/bin/debugserver`
-        if [[ "$ret" = "0" ]]; then
+        ret1=`iFileExsit /Developer/usr/bin/debugserver`
+        ret2=`iFileExsit /iOSRE/tools/debugserver`
+        if [[ "$ret" = "0" && ret2 = "0" ]]; then
             iSSHELOG "/Developer/usr/bin/debugserver not exist. please connect idevice to Xcode"
             iSSHELOG "also you can get all iOS DeviceSupport file at https://github.com/iGhibli/iOS-DeviceSupport"
             return
@@ -540,7 +576,9 @@ EOF
     fi
 
     if [ "$1" = "shell" ];then
-        ssh root@localhost -p 2222 -o stricthostkeychecking=no
+
+        ssh root@$REMOTE_IP -p $REMOTE_PORT -o stricthostkeychecking=no
+
     fi
 
     if [[ "$1" = "respring" ]]; then
