@@ -11,7 +11,7 @@
 
 ### Install
 
-> 需要在设备上安装defaults命令，iOS中的defaults读写plist的命令在[https://xia0z.github..io](https://xia0z.github..io)源中安装defaults
+> 需要在设备上安装defaults命令，iOS中的defaults读写plist的命令在[https://xia0z.github.io](https://xia0z.github.io)源中安装defaults
 
 - `git clone issh_git_project;`
 
