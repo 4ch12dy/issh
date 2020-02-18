@@ -1,17 +1,19 @@
 # issh
-> 自动登录ssh，自动打开端口映射，自动签名debugserver，一键调试，一键shell等等，越狱设备用issh就够了
+> issh is a tool like adb on android for iOS reversing and debugging. save your time for working on jailbroken idevice.
 
 
 
-### Introduction
+### Introduction 
 
-**issh最初由Android的adb启发而来。Android中只需要将设备连接上电脑就能通过adb十分方便的获取shell、安装应用等等操作。反观iOS平台，由于采用的openSSH与设备通信。与设备通信十分繁琐，不仅需要端口映射，每次还需要输入密码。所以我写了这个越狱设备的自动化脚本，只要将设备连接到电脑，就能获得与Android中adb一样的便捷，不仅如此还封装了很多实用的命令比如一键调式，砸壳等等。当然如果你还有其他想法或者实用的命令，都可以随意issue或者pr。一切以减少重复、繁琐工作为目的，enjoy~**
+Nothing,  It just for me to work on jailbreak device. Some commands can save fxxk time.
+
+if you stuck in setup iOS debug environment, here is you need. 
 
 
 
 ### Install
 
-> 需要在设备上安装defaults命令，iOS中的defaults读写plist的命令在[https://xia0z.github.io](https://xia0z.github.io)源中安装defaults
+> defaults command is need，it can get from cydia repo[https://xia0z.github.io](https://xia0z.github.io)
 
 - `git clone issh_git_project;`
 
@@ -41,6 +43,7 @@ issh log                            show system log of device
 issh crashlog                       get crash log info from device 
 issh apps                           show current running app info 
 issh fixnetwork                     fix cydia can not connect internet by remove network config  
+issh du                             show idevice disk usage 
 issh shell                          get the shell of connect device 
 issh clean                          rm authorized_keys and xia0_ssh.lock from device 
 issh run                            execute shell command on connect device 
@@ -50,70 +53,10 @@ issh reboot                         !!!if do reboot, you need reJailbreak!
 issh help/-h                        show this help info 
 ```
 
-- `issh shell`
-
-  get the shell of connect device
-
-- `issh scp`
-
-  copy file from connect device or copy local file to connect device
-
-- `issh debug [debugArgs:-a pid/processName -x backboard/auto]`
-
-  like `issh debug -a wechat` attach the wechat app
-
-  配合[xia0LLDB](https://github.com/4ch12dy/xia0LLDB)食用更加
-
-- `issh dump [dumpArgs:-l]`
-
-  Use  frida-ios-dump, auto download and run
-
-  用的frida-ios-dump脚本，会自动下载并运行
-
-- `issh run "cmd"`
-
-  run shell command on connect idevice like `issh run ls`
-
-- `issh respring/reboot/ldrestart`
-
-  注销、重启、kill所有守护进程但不重启（保留越狱环境）
-
-- `issh apps`
-
-  显示所有app（包括系统app），包名，显示名，进程名，完整路径等
-
 
 ### Screenshot
 
-![issh-debug](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-debug.png?raw=true)
-
-
-
-![issh-device](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-device.png?raw=true)
-
-
-
-![issh-dump](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-dump.png?raw=true)
-
-
-
-![issh-install](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-install.png?raw=true)
-
-
-
-![issh-run](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-run.png?raw=true)
-
-
-
-![issh-scp](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-scp.png?raw=true)
-
-
-
-![issh-shell](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-shell.png?raw=true)
-
-
-
-![issh-show-dylib](https://github.com/4ch12dy/issh/blob/master/screenshot/issh-show-dylib.png?raw=true)
+...
 
 ### Credits
 
