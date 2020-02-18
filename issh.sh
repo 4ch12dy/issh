@@ -339,11 +339,11 @@ function issh(){
         # _sshRunCMD "cat $2" > "$3"
         if [[ -f "$targetFile" || -d "$targetFile" ]]; then
             iSSHILOG "$targetFile is local file, so cp it to device"
-            scp -P 2222 -r "$targetFile" root@localhost:$3
+            scp -P $REMOTE_PORT -r "$targetFile" root@$REMOTE_IP:$3
             return
         fi
         iSSHILOG "$targetFile is remote file, so cp it from device"
-        scp -P 2222 -r root@localhost:$targetFile $3
+        scp -P $REMOTE_PORT -r root@$REMOTE_IP:$targetFile $3
     fi
 
 
@@ -452,7 +452,7 @@ EOF'
     if [[ "$1" = "listApp" ]]; then
         function handleXargs(){
             infoPlist=$1
-            scp -P 2222 -r "root@localhost:$infoPlist" /tmp/isshAppTest
+            scp -P $REMOTE_PORT -r "root@$REMOTE_IP:$infoPlist" /tmp/isshAppTest
         }
 
         ret=`sshRunCMDClean "hash defaults > /dev/null 2>&1 && echo 1 || echo 0"`
