@@ -5,7 +5,7 @@
 
 ### Introduction 
 
-Nothing,  It just for me to work on jailbreak device. Some commands can save fxxk time.
+Nothing,  It's just for me to work on jailbreak device. Some commands can save fxxk time.
 
 if you stuck in setup iOS debug environment, here is you need. 
 
@@ -27,11 +27,11 @@ if you stuck in setup iOS debug environment, here is you need.
 
   
 
-### Command
+### Commands
 
 ```bash
-xia0 ~ $ issh -h
 [*]:First Run issh on new idevice, you will only input ssh password twice! 
+issh ip [set, remove]               set/remove ip to localhost or remote ip 
 issh show [dylib/Preferences/apps]  show some info       
 issh scp remote/local local/remote  cp file from connect device or to device 
 issh dump                           Use Frida(frida-ios-dump) to dump IPA 
