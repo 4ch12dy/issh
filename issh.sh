@@ -120,6 +120,7 @@ function checkIproxy(){
 
 function printUsage(){
     iSSHILOG "First Run issh on new idevice, you will only input ssh password twice!"
+    printf "issh %-30s %-20s \n" "ip [set, remove]" "set/remove ip to localhost or remote ip"
     printf "issh %-30s %-20s \n" "show [dylib/Preferences/apps]" "show some info" 
     printf "issh %-30s %-20s \n" "scp remote/local local/remote" "cp file from connect device or to device"
     printf "issh %-30s %-20s \n" "dump" "Use Frida(frida-ios-dump) to dump IPA"
