@@ -131,6 +131,7 @@ function printUsage(){
     printf "issh %-30s %-20s \n" "crashlog" "get crash log info from device"
     printf "issh %-30s %-20s \n" "apps" "show current running app info"
     printf "issh %-30s %-20s \n" "fixnetwork" "fix cydia can not connect internet by remove network config "
+    printf "issh %-30s %-20s \n" "du" "show idevice disk usage"
     printf "issh %-30s %-20s \n" "shell" "get the shell of connect device"
     printf "issh %-30s %-20s \n" "clean" "rm authorized_keys and xia0_ssh.lock from device"
     printf "issh %-30s %-20s \n" "run" "execute shell command on connect device"
@@ -553,7 +554,7 @@ EOF
         sshRunCMD "rm /Library/Preferences/com.apple.networkextension.plist /Library/Preferences/com.apple.networkextension.necp.plist /Library/Preferences/com.apple.networkextension.cache.plist"
     fi
 
-    if [[ "$1" = "xdu" ]]; then
+    if [[ "$1" = "du" ]]; then
         shellCMD="echo "========";path=$2;du -k -d 0 \$path/* 2>/dev/null | sort -hr | awk '
         function keep2(x){
             printf(\"%.1f\", x)
