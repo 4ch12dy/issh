@@ -345,7 +345,7 @@ function issh(){
             return
         fi
         iSSHILOG "$targetFile is remote file, so cp it from device"
-        scp -P $REMOTE_PORT -r root@$REMOTE_IP:$targetFile $3
+        scp -P $REMOTE_PORT -r root@$REMOTE_IP:"$targetFile" $3
     fi
 
 
