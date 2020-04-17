@@ -16,16 +16,13 @@ if you stuck in setup iOS debug environment, here is you need.
 > defaults command is need，it can get from cydia repo[https://xia0z.github.io](https://xia0z.github.io)
 
 - `git clone issh_git_project;`
-
 - `cd issh`
-
 - `./install.sh`
-
 - If your shell is bash run: `source ~/.bash_profile` 
-
 - If your shell is zsh run :`source ~/.zshrc`
 
-  
+
+**Notice: issh some commands may not support zsh, it recommend you to use bash**
 
 ### Commands
 
