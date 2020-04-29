@@ -386,15 +386,29 @@ function issh(){
         sshRunCMD "$killDebugserverIfAlive"
         
         # kill app process if use -x backboard  
-        if [[ "$debugArgs" =~ "backboard" ]]; then
-            iSSHILOG "kill app because debug with -x backboard"
-            
-            tmpAppPath=$(echo $debugArgs | awk '{print $NF}')
-            tmpAppExename=$(basename $tmpAppPath)
-            killAppIfAlive="ps -e | grep $tmpAppPath | grep -v grep; [[ $? == 0 ]] && (killall -9 $tmpAppExename 2> /dev/null)"
-            sshRunCMD "$killAppIfAlive"
+        if [[ ! "$debugArgs" =~ "backboardd" ]];then
+            if [[ "$debugArgs" =~ "backboard" ]]; then
+                iSSHILOG "kill app because debug with -x backboard"
+                
+                tmpAppPath=$(echo $debugArgs | awk '{print $NF}')
+                tmpAppExename=$(basename $tmpAppPath)
+                killAppIfAlive="ps -e | grep $tmpAppPath | grep -v grep; [[ $? == 0 ]] && (killall -9 $tmpAppExename 2> /dev/null)"
+                sshRunCMD "$killAppIfAlive"
+            fi
         fi
-        
+
+        # check debug args
+        if [[ -z "$debugArgs" ]];then
+            iSSHILOG "debug args is empty, not need debug."
+            return
+        fi
+
+        ret=`iFileExsit /usr/bin/ldid`
+        if [[ "$ret" = "0" ]]; then
+            iSSHELOG "ldid command not exist, you can search link identity editor in repo:https://apt.bingner.com or coolstar repo"
+            return
+        fi
+
         # check tools debugserver
         ret=`iFileExsit /iOSRE/tools/debugserver`
         if [[ "$ret" = "1" ]]; then
@@ -427,6 +441,14 @@ function issh(){
     <true/>
     <key>com.apple.system-task-ports</key>
     <true/>
+    <key>com.apple.private.logging.diagnostic</key>
+    <true/>
+    <key>com.apple.private.memorystatus</key>
+    <true/>
+    <key>com.apple.private.cs.debugger</key>
+    <true/>
+    <key>com.apple.private.security.container-required</key>
+    <false/>
     <key>get-task-allow</key>
     <true/>
     <key>platform-application</key>
