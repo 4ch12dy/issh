@@ -340,6 +340,11 @@ function issh(){
         targetFile="$2"
         # _sshRunCMD "cat $2" > "$3"
         if [[ -f "$targetFile" || -d "$targetFile" ]]; then
+            if [[ `iFileExsit $targetFile` = "1" || `iDirExsit $targetFile` = "1" ]]; then
+                iSSHELOG "$targetFile is exsit both local and remote. stop! you can cp file to other path"
+                return
+            fi
+
             iSSHILOG "$targetFile is local file, so cp it to device"
             scp -P $REMOTE_PORT -r "$targetFile" root@$REMOTE_IP:$3
             return
