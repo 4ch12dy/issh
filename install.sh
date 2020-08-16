@@ -3,7 +3,7 @@ root_dir=$(pwd)
 issh_name="issh.sh"
 issh_shell_file="$root_dir/$issh_name"
 bash_profile="$HOME/.bash_profile"
-zsh_profile="$HOME/.zshrc"
+zsh_profile="$ZDOTDIR/.zshrc"
 
 echo "==== install issh ===="
 if [[ ! -d ~/.issh ]]; then
